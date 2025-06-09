@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3310e54394bc34944af1e623de4a71c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementType: 1
+  _movementType: 0
   _characterController: {fileID: 8513848312536088108}
   _orientation: {fileID: 7728749242102904886}
   _movementSpeed: 3
@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64617db3788f1b34396824a69893b042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameraType: 1
+  _cameraType: 0
   _cameraTPS: {fileID: 8579223613652212030}
   _orientation: {fileID: 7728749242102904886}
   _player: {fileID: 3204371182443341991}
