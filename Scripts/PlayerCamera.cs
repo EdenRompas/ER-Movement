@@ -14,6 +14,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private Transform _orientation;
     [SerializeField] private Transform _player;
     [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private GameObject _playerModel;
 
     [SerializeField] private GameObject _cameraFPS;
     [SerializeField] private float _sensitivity;
@@ -43,6 +44,7 @@ public class PlayerCamera : MonoBehaviour
 
                 _cameraTPS.SetActive(true);
                 _cameraFPS.SetActive(false);
+                _playerModel.SetActive(true);
 
                 break;
 
@@ -50,8 +52,20 @@ public class PlayerCamera : MonoBehaviour
 
                 _cameraFPS.SetActive(true);
                 _cameraTPS.SetActive(false);
+                _playerModel.SetActive(false);
 
                 break;
+        }
+    }
+
+    private void Update()
+    {
+        if (_cameraType == CameraType.FPS)
+        {
+            if (Camera.main.transform.position == _cameraFPS.transform.position && _playerModel.activeSelf == true)
+            {
+                _playerModel.SetActive(false);
+            }
         }
     }
 
@@ -104,6 +118,7 @@ public class PlayerCamera : MonoBehaviour
         {
             _cameraTPS.SetActive(true);
             _cameraFPS.SetActive(false);
+            _playerModel.SetActive(true);
 
             _cameraType = CameraType.TPS;
         }

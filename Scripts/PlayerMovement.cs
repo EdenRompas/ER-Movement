@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _isJumping;
     private bool _isSprinting;
+    private bool _isNotAllowedSprinting;
 
     private void OnEnable()
     {
@@ -73,10 +74,26 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void ModifyPlayerSpeed(int speedModify, bool isHoldSprint)
+    {
+        _movementSpeed += speedModify;
+        _isNotAllowedSprinting = isHoldSprint;
+    }
+
     private void TPSMovement()
     {
         Vector3 moveDirection = (_orientation.forward * _inputDirection.y + _orientation.right * _inputDirection.x).normalized;
-        float currentSpeed = _isSprinting ? _sprintSpeed : _movementSpeed;
+
+        float currentSpeed;
+
+        if (!_isNotAllowedSprinting)
+        {
+            currentSpeed = _isSprinting ? _sprintSpeed : _movementSpeed;
+        }
+        else
+        {
+            currentSpeed = _movementSpeed;
+        }
 
         if (_isJumping && _characterController.isGrounded)
         {
