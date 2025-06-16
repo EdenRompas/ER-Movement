@@ -6,13 +6,13 @@ public class PlayerController : MonoBehaviour
 {
     public static event Action<Vector2> OnMoveInput;
     public static event Action OnJumpInput;
-    public static event Action<bool> OnSprintInput;
+    public static event Action<bool> OnRunningInput;
     public static event Action<Vector2> OnLookInput;
     public static event Action OnChangeCameraInput;
 
     [SerializeField] private InputActionReference _movementButtonInput;
     [SerializeField] private InputActionReference _jumpButtonInput;
-    [SerializeField] private InputActionReference _sprintButtonInput;
+    [SerializeField] private InputActionReference _runningButtonInput;
     [SerializeField] private InputActionReference _lookXInput;
     [SerializeField] private InputActionReference _lookYInput;
     [SerializeField] private InputActionReference _changeCameraInput;
@@ -20,16 +20,16 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         _jumpButtonInput.action.performed += SendJumpInput;
-        _sprintButtonInput.action.performed += ctx => SendSprintInput(true);
-        _sprintButtonInput.action.canceled += ctx => SendSprintInput(false);
+        _runningButtonInput.action.performed += ctx => SendRunningInput(true);
+        _runningButtonInput.action.canceled += ctx => SendRunningInput(false);
         _changeCameraInput.action.performed += SendChangeCameraInput;
     }
 
     private void OnDisable()
     {
         _jumpButtonInput.action.performed -= SendJumpInput;
-        _sprintButtonInput.action.performed -= ctx => SendSprintInput();
-        _sprintButtonInput.action.canceled -= ctx => SendSprintInput();
+        _runningButtonInput.action.performed -= ctx => SendRunningInput();
+        _runningButtonInput.action.canceled -= ctx => SendRunningInput();
         _changeCameraInput.action.performed -= SendChangeCameraInput;
     }
 
@@ -50,9 +50,9 @@ public class PlayerController : MonoBehaviour
         OnJumpInput?.Invoke();
     }
 
-    private void SendSprintInput(bool isSprint = false)
+    private void SendRunningInput(bool isRunning = false)
     {
-        OnSprintInput?.Invoke(isSprint);
+        OnRunningInput?.Invoke(isRunning);
     }
 
     private void SendLookInput()

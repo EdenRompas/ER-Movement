@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private PlayerMovement _playerMovement;
@@ -9,7 +9,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         _playerMovement.OnIdle += SetIdle;
         _playerMovement.OnWalking += SetWalking;
-        _playerMovement.OnSprinting += SetSprinting;
+        _playerMovement.OnRunning += SetRunning;
         _playerMovement.OnJumping += SetJumping;
         _playerMovement.OnJumpWhileMoving += SetJumpingWhileMove;
     }
@@ -18,7 +18,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         _playerMovement.OnIdle -= SetIdle;
         _playerMovement.OnWalking -= SetWalking;
-        _playerMovement.OnSprinting -= SetSprinting;
+        _playerMovement.OnRunning -= SetRunning;
         _playerMovement.OnJumping -= SetJumping;
         _playerMovement.OnJumpWhileMoving -= SetJumpingWhileMove;
     }
@@ -27,19 +27,19 @@ public class PlayerAnimator : MonoBehaviour
     {
         _animator.SetBool("IsIdle", true);
         _animator.SetBool("IsWalking", false);
-        _animator.SetBool("IsSprinting", false);
+        _animator.SetBool("IsRunning", false);
     }
 
     private void SetWalking()
     {
         _animator.SetBool("IsWalking", true);
         _animator.SetBool("IsIdle", false);
-        _animator.SetBool("IsSprinting", false);
+        _animator.SetBool("IsRunning", false);
     }
 
-    private void SetSprinting()
+    private void SetRunning()
     {
-        _animator.SetBool("IsSprinting", true);
+        _animator.SetBool("IsRunning", true);
         _animator.SetBool("IsWalking", false);
         _animator.SetBool("IsIdle", false);
     }
@@ -49,7 +49,7 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetTrigger("Jump");
         _animator.SetBool("IsIdle", false);
         _animator.SetBool("IsWalking", false);
-        _animator.SetBool("IsSprinting", false);
+        _animator.SetBool("IsRunning", false);
     }
 
     private void SetJumpingWhileMove()
@@ -57,6 +57,6 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetTrigger("JumpWhileMove");
         _animator.SetBool("IsIdle", false);
         _animator.SetBool("IsWalking", false);
-        _animator.SetBool("IsSprinting", false);
+        _animator.SetBool("IsRunning", false);
     }
 }

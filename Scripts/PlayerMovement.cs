@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public Action OnIdle {  get; set; }
     public Action OnWalking { get; set; }
-    public Action OnSprinting { get; set; }
+    public Action OnRunning { get; set; }
     public Action OnJumping { get; set; }
     public Action OnJumpWhileMoving { get; set; }
     public bool IsWalking { get; private set; }
@@ -20,12 +20,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private MovementType _movementType;
 
     [SerializeField] private CharacterController _characterController;
+    [SerializeField] private SO_Player _playerSO;
     [SerializeField] private Transform _orientation;
-    [SerializeField] private float _movementSpeed = 5;
-    [SerializeField] private float _sprintSpeed = 8;
-    [SerializeField] private float _gravity = -9.81f;
-    [SerializeField] private float _jumpHeight = 1.5f;
-    [SerializeField] private float _directionSmoothTime = 0.1f;
 
     private Vector2 _inputDirection;
     private Vector3 _playerVelocity;
@@ -33,18 +29,27 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _smoothedRotation;
     private Vector3 _directionVelocity;
 
+    private float _gravity = -9.81f;
+    private float _directionSmoothTime = 0.1f;
+
+    private float _currentWalkingSpeed;
     private float _currentVelocity;
     private float _smoothedAngle;
 
     private bool _isJumping;
-    private bool _isSprinting;
-    private bool _isNotAllowedSprinting;
+    private bool _isRunning;
+    private bool _isNotAllowedRunning;
+
+    private void Start()
+    {
+        _currentWalkingSpeed = _playerSO.WalkingSpeed;
+    }
 
     private void OnEnable()
     {
         PlayerController.OnMoveInput += SetInputDirection;
         PlayerController.OnJumpInput += SetJump;
-        PlayerController.OnSprintInput += SetSprint;
+        PlayerController.OnRunningInput += SetRunning;
         PlayerController.OnChangeCameraInput += SetCamera;
     }
 
@@ -52,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
     {
         PlayerController.OnMoveInput -= SetInputDirection;
         PlayerController.OnJumpInput -= SetJump;
-        PlayerController.OnSprintInput -= SetSprint;
+        PlayerController.OnRunningInput -= SetRunning;
         PlayerController.OnChangeCameraInput -= SetCamera;
     }
 
@@ -74,10 +79,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void ModifyPlayerSpeed(int speedModify, bool isHoldSprint)
+    public void ModifyPlayerSpeed(int speedModify, bool isHoldRunning)
     {
-        _movementSpeed += speedModify;
-        _isNotAllowedSprinting = isHoldSprint;
+        _currentWalkingSpeed += speedModify;
+        _isNotAllowedRunning = isHoldRunning;
     }
 
     private void TPSMovement()
@@ -86,18 +91,18 @@ public class PlayerMovement : MonoBehaviour
 
         float currentSpeed;
 
-        if (!_isNotAllowedSprinting)
+        if (!_isNotAllowedRunning)
         {
-            currentSpeed = _isSprinting ? _sprintSpeed : _movementSpeed;
+            currentSpeed = _isRunning ? _playerSO.RunningSpeed : _currentWalkingSpeed;
         }
         else
         {
-            currentSpeed = _movementSpeed;
+            currentSpeed = _currentWalkingSpeed;
         }
 
         if (_isJumping && _characterController.isGrounded)
         {
-            _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            _playerVelocity.y = Mathf.Sqrt(_playerSO.JumpHeight * -2f * _gravity);
 
             if (moveDirection.magnitude > 0.1f)
             {
@@ -138,9 +143,9 @@ public class PlayerMovement : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0f, _smoothedAngle, 0f);
             transform.rotation = rotation;
 
-            if (_characterController.isGrounded && _isSprinting)
+            if (_characterController.isGrounded && _isRunning)
             {
-                OnSprinting?.Invoke();
+                OnRunning?.Invoke();
 
                 IsSprinting = true;
                 IsWalking = false;
@@ -164,13 +169,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void FPSMovement()
     {
-        float currentSpeed = _isSprinting ? _sprintSpeed : _movementSpeed;
+        float currentSpeed = _isRunning ? _playerSO.RunningSpeed : _currentWalkingSpeed;
 
         Vector3 moveDirection = transform.TransformDirection(new Vector3(_inputDirection.x, 0, _inputDirection.y));
 
         if (_isJumping && _characterController.isGrounded) 
         {
-            _playerVelocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            _playerVelocity.y = Mathf.Sqrt(_playerSO.JumpHeight * -2f * _gravity);
 
             if (moveDirection.magnitude > 0.1f)
             {
@@ -197,9 +202,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (moveDirection.magnitude > 0.1f)
         {
-            if (_characterController.isGrounded && _isSprinting)
+            if (_characterController.isGrounded && _isRunning)
             {
-                OnSprinting?.Invoke();
+                OnRunning?.Invoke();
 
                 IsSprinting = true;
                 IsWalking = false;
@@ -231,9 +236,9 @@ public class PlayerMovement : MonoBehaviour
         _isJumping = true;
     }
 
-    private void SetSprint(bool isSprinting)
+    private void SetRunning(bool isRunning)
     {
-        _isSprinting = isSprinting;
+        _isRunning = isRunning;
     }
 
     private void SetCamera()

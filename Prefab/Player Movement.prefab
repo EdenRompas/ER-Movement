@@ -305,12 +305,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementType: 0
   _characterController: {fileID: 8513848312536088108}
+  _playerSO: {fileID: 11400000, guid: a1c430bae464e7248b1704a61e4d7554, type: 2}
   _orientation: {fileID: 7728749242102904886}
-  _movementSpeed: 3
-  _sprintSpeed: 6
-  _gravity: -9.81
-  _jumpHeight: 1
-  _directionSmoothTime: 0.1
 --- !u!114 &1396120625200150363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,7 +342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementButtonInput: {fileID: -7769019524559469770, guid: 4b46a338dff939e408803f60f4364bec, type: 3}
   _jumpButtonInput: {fileID: -6242146289259473305, guid: 4b46a338dff939e408803f60f4364bec, type: 3}
-  _sprintButtonInput: {fileID: -4947892030833405167, guid: 4b46a338dff939e408803f60f4364bec, type: 3}
+  _runningButtonInput: {fileID: -4947892030833405167, guid: 4b46a338dff939e408803f60f4364bec, type: 3}
   _lookXInput: {fileID: 4718596357673513571, guid: 4b46a338dff939e408803f60f4364bec, type: 3}
   _lookYInput: {fileID: -9145870795253349455, guid: 4b46a338dff939e408803f60f4364bec, type: 3}
   _changeCameraInput: {fileID: -7644855763832986270, guid: 4b46a338dff939e408803f60f4364bec, type: 3}
