@@ -8,8 +8,9 @@ public class PlayerMovement : MonoBehaviour
     public Action OnRunning { get; set; }
     public Action OnJumping { get; set; }
     public Action OnJumpWhileMoving { get; set; }
+    public Action OnLanding { get; set; }
     public bool IsWalking { get; private set; }
-    public bool IsSprinting { get; private set; }
+    public bool IsRunning { get; private set; }
 
     public enum MovementType
     {
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isJumping;
     private bool _isRunning;
     private bool _isNotAllowedRunning;
+    private bool _isGoingToLanding;
 
     private void Start()
     {
@@ -114,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             _isJumping = false;
+            _isGoingToLanding = true;
         }
         else if (_characterController.isGrounded)
         {
@@ -147,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 OnRunning?.Invoke();
 
-                IsSprinting = true;
+                IsRunning = true;
                 IsWalking = false;
             }
             else if (_characterController.isGrounded)
@@ -155,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
                 OnWalking?.Invoke();
 
                 IsWalking = true;
-                IsSprinting = false;
+                IsRunning = false;
             }
         }
         else if (_characterController.isGrounded)
@@ -163,7 +166,13 @@ public class PlayerMovement : MonoBehaviour
             OnIdle?.Invoke();
 
             IsWalking = false;
-            IsSprinting = false;
+            IsRunning = false;
+        }
+
+        if (_isGoingToLanding && _characterController.isGrounded)
+        {
+            _isGoingToLanding = false;
+            OnLanding?.Invoke();
         }
     }
 
@@ -206,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 OnRunning?.Invoke();
 
-                IsSprinting = true;
+                IsRunning = true;
                 IsWalking = false;
             }
             else if (_characterController.isGrounded)
@@ -214,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
                 OnWalking?.Invoke();
 
                 IsWalking = true;
-                IsSprinting = false;
+                IsRunning = false;
             }
         }
         else if (_characterController.isGrounded)
@@ -222,7 +231,7 @@ public class PlayerMovement : MonoBehaviour
             OnIdle?.Invoke();
 
             IsWalking = false;
-            IsSprinting = false;
+            IsRunning = false;
         }
     }
 
