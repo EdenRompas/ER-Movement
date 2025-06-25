@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _isJumping;
     private bool _isRunning;
-    private bool _isAllowedRunning;
+    private bool _isAllowedRunning = true;
     private bool _isGoingToLanding;
 
     private void Start()

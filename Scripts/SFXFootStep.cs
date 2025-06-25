@@ -44,10 +44,6 @@ public class SFXFootStep : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            _stepTimer = 0f;
-        }
     }
 
     private void PlayFootStepSound()
