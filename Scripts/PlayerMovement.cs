@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _isJumping;
     private bool _isRunning;
-    private bool _isNotAllowedRunning;
+    private bool _isAllowedRunning;
     private bool _isGoingToLanding;
 
     private void Start()
@@ -81,10 +81,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void ModifyPlayerSpeed(int speedModify, bool isHoldRunning)
+    public void ModifyPlayerSpeed(int speedModify, bool isHoldRunning, bool isSetDefault = false)
     {
-        _currentWalkingSpeed += speedModify;
-        _isNotAllowedRunning = isHoldRunning;
+        if (isSetDefault)
+        {
+            _currentWalkingSpeed = _playerSO.WalkingSpeed;
+            _isAllowedRunning = isHoldRunning;
+        }
+        else
+        {
+            _currentWalkingSpeed += speedModify;
+            _isAllowedRunning = isHoldRunning;
+        }
     }
 
     private void TPSMovement()
@@ -93,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
 
         float currentSpeed;
 
-        if (!_isNotAllowedRunning)
+        if (_isAllowedRunning)
         {
             currentSpeed = _isRunning ? _playerSO.RunningSpeed : _currentWalkingSpeed;
         }
