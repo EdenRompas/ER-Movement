@@ -15,3 +15,7 @@ MonoBehaviour:
   WalkingSpeed: 3
   RunningSpeed: 8
   JumpHeight: 0.8
+  FootstepClips:
+  - {fileID: 8300000, guid: 8e001351cd7065543a068386cde4c960, type: 3}
+  - {fileID: 8300000, guid: c41fb169b2991c247a5466e00faa6639, type: 3}
+  LandingClip: {fileID: 8300000, guid: 76c66b3ae15685a45a334b0628d1edd1, type: 3}
