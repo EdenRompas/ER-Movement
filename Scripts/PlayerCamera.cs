@@ -26,14 +26,14 @@ public class PlayerCamera : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnLookInput += SetInputLook;
-        PlayerController.OnChangeCameraInput += SetCamera;
+        PlayerInputManager.OnLookInput += SetInputLook;
+        PlayerInputManager.OnChangeCameraInput += SetCamera;
     }
 
     private void OnDisable()
     {
-        PlayerController.OnLookInput -= SetInputLook;
-        PlayerController.OnChangeCameraInput -= SetCamera;
+        PlayerInputManager.OnLookInput -= SetInputLook;
+        PlayerInputManager.OnChangeCameraInput -= SetCamera;
     }
 
     private void Start()

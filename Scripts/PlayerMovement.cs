@@ -49,18 +49,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnMoveInput += SetInputDirection;
-        PlayerController.OnJumpInput += SetJump;
-        PlayerController.OnRunningInput += SetRunning;
-        PlayerController.OnChangeCameraInput += SetCamera;
+        PlayerInputManager.OnMoveInput += SetInputDirection;
+        PlayerInputManager.OnJumpInput += SetJump;
+        PlayerInputManager.OnRunningInput += SetRunning;
+        PlayerInputManager.OnChangeCameraInput += SetCamera;
     }
 
     private void OnDisable()
     {
-        PlayerController.OnMoveInput -= SetInputDirection;
-        PlayerController.OnJumpInput -= SetJump;
-        PlayerController.OnRunningInput -= SetRunning;
-        PlayerController.OnChangeCameraInput -= SetCamera;
+        PlayerInputManager.OnMoveInput -= SetInputDirection;
+        PlayerInputManager.OnJumpInput -= SetJump;
+        PlayerInputManager.OnRunningInput -= SetRunning;
+        PlayerInputManager.OnChangeCameraInput -= SetCamera;
     }
 
     private void Update()
