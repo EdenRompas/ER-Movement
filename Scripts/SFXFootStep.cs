@@ -50,16 +50,37 @@ public class SFXFootStep : MonoBehaviour
     {
         if (_playerSO.FootstepClips.Length > 0)
         {
-            int index = Random.Range(0, _playerSO.FootstepClips.Length);
-            SFXManager.Instance.PlaySFX(_playerSO.FootstepClips[index], _volume);
+            Ray ray = new Ray(transform.position, Vector3.down);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 2f))
+            {
+                foreach (var item in _playerSO.FootstepClips)
+                {
+                    if (item.Tag == hit.transform.gameObject.tag)
+                    {
+                        int index = Random.Range(0, item.FootstepClips.Length);
+                        SFXManager.Instance.PlaySFX(item.FootstepClips[index], _volume);
+                    }
+                }
+            }
         }
     }
 
     private void PlayLandingSound()
     {
-        if (_playerSO.LandingClip != null)
+        foreach (var item in _playerSO.FootstepClips)
         {
-            SFXManager.Instance.PlaySFX(_playerSO.LandingClip, _volume);
+            Ray ray = new Ray(transform.position, Vector3.down);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 2f))
+            {
+                if (item.Tag == hit.transform.gameObject.tag)
+                {
+                    SFXManager.Instance.PlaySFX(item.LandingClip, _volume);
+                }
+            }
         }
     }
 }
